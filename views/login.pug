@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Login
+  body
+    p usuarios de prueba: "admin", "docente", "estudiante" (password igual al nombre)
+    h1 Iniciar sesión
+    if error
+      p(style="color: red") #{error}
+    form(action="/" method="POST")
+      label(for="nombre") Nombre:
+      input(type="text" name="nombre" required)
+      br
+      label(for="password") Contraseña:
+      input(type="password" name="password" required)
+      br
+      button(type="submit") Iniciar sesión

@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title Listado de Docentes
+
+  body
+    h1 Listado de Docentes
+ 
+    each docente in docentes
+      div
+        p #{docente.nombre} (#{docente.dni})
+        if docente.cursos
+          ul
+            each curso in docente.cursos
+              li #{curso}
+        else 
+          ul
+            li No tiene cursos asignados

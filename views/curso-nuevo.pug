@@ -1,0 +1,52 @@
+doctype html
+html
+  head
+    title Alta de Curso
+    script.
+      // Función para filtrar estudiantes
+      function filtrarEstudiantes() {
+        const filtro = document.getElementById('filtroEstudiantes').value.toLowerCase();
+        const estudiantes = document.querySelectorAll('.estudiante-item');
+        
+        estudiantes.forEach(function(estudiante) {
+          const nombreEstudiante = estudiante.querySelector('label').innerText.toLowerCase();
+          if (nombreEstudiante.includes(filtro)) {
+            estudiante.style.display = 'block';
+          } else {
+            estudiante.style.display = 'none';
+          }
+        });
+      }
+  body
+    h1 Alta de Curso
+
+    form(action="/curso/nuevo" method="POST")
+      //- Nombre del curso
+      label(for="nombre") Nombre del Curso:
+      input(type="text" name="nombre" required)
+      br
+
+      //- Selección de docentes
+      label(for="docentes") Seleccionar Docentes:
+      br
+      each docente in docentes
+        input(type="checkbox" name="docentes" value=docente._id)
+        | #{docente.nombre}
+        br
+
+      //- Campo de búsqueda para filtrar estudiantes
+      label(for="filtroEstudiantes") Buscar Estudiantes:
+      input(type="text" id="filtroEstudiantes" oninput="filtrarEstudiantes()" placeholder="Buscar por nombre")
+      br
+      br
+
+      //- Selección de estudiantes (con filtro)
+      label(for="estudiantes") Seleccionar Estudiantes:
+      br
+      each estudiante in estudiantes
+        div.estudiante-item
+          input(type="checkbox" name="estudiantes" value=estudiante._id)
+          label #{estudiante.nombre}
+        br
+
+      button(type="submit") Guardar Curso

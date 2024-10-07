@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    title Alta de Estudiante
+  body
+    h1 Alta de Estudiante
+    if error
+      p(style="color: red") #{error}
+    if success
+      p(style="color: green") #{success}
+    form(action="/estudiante/nuevo" method="POST")
+      div
+        label(for="nombre") Nombre del Estudiante:
+        input(type="text" name="nombre" required)
+      div
+        label(for="dni") DNI del Estudiante:
+        input(type="text" name="dni" required)
+      br
+      button(type="submit") Guardar Estudiante

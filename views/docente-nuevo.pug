@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    title Alta de Docente
+  body
+    h1 Alta de Docente
+    if error
+      p(style="color: red") #{error}
+    if success
+      p(style="color: green") #{success}
+    form(action="/docente/nuevo" method="POST")
+      div
+        label(for="nombre") Nombre del Docente:
+        input(type="text" name="nombre" required)
+      div
+        label(for="dni") DNI del Docente:
+        input(type="text" name="dni" required)
+      br
+      button(type="submit") Guardar Docente
