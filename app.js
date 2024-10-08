@@ -23,10 +23,7 @@ app.set("view engine", "pug");
 app.set("views", "./views");
 
 mongoose
-  .connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(uri, {})
   .then(() => {
     console.log("Conectado a MongoDB");
     //cargarDatosInicio();
