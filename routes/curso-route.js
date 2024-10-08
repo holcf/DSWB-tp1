@@ -3,7 +3,8 @@ import {
   nuevoCurso,
   postNuevoCurso,
   listarCursos,
-  editarNotas,
+  editarNotasCurso,
+  postEditarNotasCurso,
 } from "../controllers/curso-controller.js";
 
 export const cursoRouter = express.Router();
@@ -18,5 +19,7 @@ cursoRouter.post("/nuevo", postNuevoCurso);
 cursoRouter.get("/lista", listarCursos);
 
 // Ruta para editar notas
-cursoRouter.get("/editar/:id", editarNotas);
+cursoRouter.get("/editar/:id", editarNotasCurso);
 
+// Ruta para procesar el formulario de edición de notas
+cursoRouter.post("/editar/:id", postEditarNotasCurso);

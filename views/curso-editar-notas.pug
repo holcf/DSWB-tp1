@@ -6,12 +6,16 @@ html
 
 
   body
+    if error
+      p(style="color: red") #{error}
+    if success
+      p(style="color: green") #{success}
     h1 Curso: #{curso.nombre}
  
     div(style="border: 1px solid grey; padding: 1rem; margin: 1rem; min-width: 600px") 
       div
         details
-          summary Docentes: #{curso.docentes.length}
+          summary(open) Docentes: #{curso.docentes.length}
           if curso.docentes
             ul
             each docente in curso.docentes
@@ -21,11 +25,17 @@ html
       br
       div
         details
-          summary Estudiantes: #{curso.estudiantes.length}
+          summary(open) Estudiantes: #{curso.estudiantes.length}
           if curso.estudiantes.length > 0
-            each estudiante in curso.estudiantes
-              p Nombre:  #{estudiante.estudiante.nombre}
-              p Calificacion: #{estudiante.calificacion}
+            form(action="/curso/editar/"+curso._id id="form-editar-notas" method="POST")
+              each estudiante in curso.estudiantes
+                p Nombre:  #{estudiante.estudiante.nombre}
+                p Calificacion: 
+                input(type="number" name="calificacion" min=0 max=10 value=estudiante.calificacion)
+                input(type="hidden" name="estudianteId" value=estudiante.estudiante._id)
+                br
+              button(type="submit") Guardar
+              
           else
             p No tiene estudiantes asignados
       br        

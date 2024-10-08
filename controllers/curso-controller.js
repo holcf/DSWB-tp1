@@ -47,7 +47,7 @@ export async function listarCursos(req, res) {
   }
 }
 
-export async function editarNotas(req, res) {
+export async function editarNotasCurso(req, res) {
   try {
     const curso = await Curso.findById(req.params.id).populate(
       "docentes estudiantes.estudiante"
@@ -55,6 +55,34 @@ export async function editarNotas(req, res) {
     res.render("curso-editar-notas", { curso });
   } catch (error) {
     console.error("--- Editar Notas | Error al obtener datos >>> ", error);
+    res.status(500).render("error", {
+      message: "Editar Notas | Error interno del servidor.",
+      errorCode: 500,
+    });
+  }
+}
+
+export async function postEditarNotasCurso(req, res) {
+  try {
+    const curso = await Curso.findById(req.params.id);
+
+    let estudiantes = [];
+    for (let i = 0; i < req.body.estudianteId.length; i++) {
+      estudiantes.push({
+        estudiante: req.body.estudianteId[i],
+        calificacion: parseInt(req.body.calificacion[i]),
+      });
+    }
+    curso.estudiantes = estudiantes;
+    await curso.save();
+
+    let now = new Date();
+    res.render("curso-editar-notas", {
+      curso,
+      success: "Notas guardadas. " + now.toLocaleTimeString(),
+    });
+  } catch (error) {
+    console.error("--- Editar Notas | Error al guardar datos >>> ", error);
     res.status(500).render("error", {
       message: "Editar Notas | Error interno del servidor.",
       errorCode: 500,

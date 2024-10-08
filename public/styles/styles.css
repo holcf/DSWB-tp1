@@ -75,9 +75,6 @@ summary {
   font-size: 1rem;
 }
 
-#login-form button {
-  align-self: center;
-}
 
 
 .lista-checks {
@@ -87,4 +84,11 @@ summary {
 
 .mb1 {
   margin-bottom: 1rem;
+}
+
+#login-form button {
+  align-self: center;
+}
+#form-editar-notas input {
+  max-width: fit-content;
 }
