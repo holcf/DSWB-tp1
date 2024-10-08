@@ -1,5 +1,9 @@
 import express from "express";
-import { nuevoCurso, postNuevoCurso } from "../controllers/curso-controller.js";
+import {
+  nuevoCurso,
+  postNuevoCurso,
+  listarCursos,
+} from "../controllers/curso-controller.js";
 
 export const cursoRouter = express.Router();
 
@@ -8,3 +12,7 @@ cursoRouter.get("/nuevo", nuevoCurso);
 
 // Ruta para procesar el formulario de alta de curso
 cursoRouter.post("/nuevo", postNuevoCurso);
+
+// Ruta para listar cursos
+cursoRouter.get("/lista", listarCursos);
+

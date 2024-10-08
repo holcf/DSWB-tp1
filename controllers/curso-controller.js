@@ -5,7 +5,11 @@ export async function nuevoCurso(req, res) {
     const estudiantes = await Estudiante.find();
     res.render("curso-nuevo", { docentes, estudiantes });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("--- Alta de curso | Error al obtener datos >>> ", error);
+    res.status(500).render("error", {
+      message: "Alta de Curso | Error interno del servidor.",
+      errorCode: 500,
+    });
   }
 }
 
@@ -19,6 +23,26 @@ export async function postNuevoCurso(req, res) {
     await nuevoCurso.save();
     res.redirect("/curso/nuevo");
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("--- Error al guardar curso >>> ", error);
+    res.status(500).render("error", {
+      message: "Alta de Curso | Error interno del servidor.",
+      errorCode: 500,
+    });
+  }
+}
+
+export async function listarCursos(req, res) {
+  try {
+    const cursos = await Curso.find().populate(
+      "docentes estudiantes.estudiante"
+    );
+    //console.log(cursos);
+    res.render("curso-lista", { cursos });
+  } catch (error) {
+    console.error("--- Listado de Cursos | Error al obtener datos >>> ", error);
+    res.status(500).render("error", {
+      message: "Listado de Cursos | Error interno del servidor.",
+      errorCode: 500,
+    });
   }
 }

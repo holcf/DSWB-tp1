@@ -16,3 +16,5 @@ docenteRouter.post("/nuevo", postNuevoDocente);
 
 // Ruta para listar docentes
 docenteRouter.get("/lista", listarDocentes);
+
+

@@ -1,0 +1,36 @@
+doctype html
+html
+  head
+    title Listado de Cursos
+    link(rel='stylesheet', href='/styles/styles.css')
+
+
+  body
+    h1 Listado de Cursos
+ 
+    each curso in cursos
+      div(style="border: 1px solid grey; padding: 1rem; margin: 1rem; min-width: 600px") 
+        h2 Curso: #{curso.nombre}
+        br
+        div
+          details
+            summary Docentes: #{curso.docentes.length}
+            if curso.docentes
+              ul
+              each docente in curso.docentes
+                li #{docente.nombre} (#{docente.dni})
+            else
+              p No tiene docentes asignados
+
+        br
+        div
+          details
+            summary Estudiantes: #{curso.estudiantes.length}
+            if curso.estudiantes.length > 0
+              each estudiante in curso.estudiantes
+                p Nombre:  #{estudiante.estudiante.nombre}
+                p Calificacion: #{estudiante.calificacion}
+            else
+              p No tiene estudiantes asignados
+            
+          

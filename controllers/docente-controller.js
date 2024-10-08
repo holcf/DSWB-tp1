@@ -50,6 +50,10 @@ export async function postNuevoDocente(req, res) {
 
     res.render("docente-nuevo", { success: "Docente guardardo con éxito" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("--- Error al guardar docente >>> ", error);
+    res.status(500).render("error", {
+      message: "Alta de docente | Error interno del servidor.",
+      errorCode: 500,
+    });
   }
 }
