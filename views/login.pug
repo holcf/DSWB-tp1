@@ -2,16 +2,19 @@ doctype html
 html
   head
     title Login
+    link(rel='stylesheet', href='/styles/styles.css')
   body
     p usuarios de prueba: "admin", "docente", "estudiante" (password igual al nombre)
     h1 Iniciar sesión
     if error
       p(style="color: red") #{error}
-    form(action="/" method="POST")
+    form(action="/" method="POST" id="login-form")
       label(for="nombre") Nombre:
-      input(type="text" name="nombre" required)
+      input(type="text" name="nombre" value="admin" required)
       br
       label(for="password") Contraseña:
-      input(type="password" name="password" required)
+      input(type="password" name="password" value="admin" required)
       br
       button(type="submit") Iniciar sesión
+
+<!--TODO: después remover los valores "admin" -->

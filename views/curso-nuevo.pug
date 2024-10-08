@@ -2,7 +2,22 @@ doctype html
 html
   head
     title Alta de Curso
+    link(rel='stylesheet', href='/styles/styles.css')
+
     script.
+      function filtrarDocentes() {
+        const filtro = document.getElementById('filtroDocentes').value.toLowerCase();
+        const docentes = document.querySelectorAll('.docente-item');
+        
+        docentes.forEach(function(docente) {
+          const nombreDocente = docente.querySelector('label').innerText.toLowerCase();
+          if (nombreDocente.includes(filtro)) {
+            docente.style.display = 'block';
+          } else {
+            docente.style.display = 'none';
+          }
+        });
+      }
       // Función para filtrar estudiantes
       function filtrarEstudiantes() {
         const filtro = document.getElementById('filtroEstudiantes').value.toLowerCase();
@@ -24,29 +39,28 @@ html
       //- Nombre del curso
       label(for="nombre") Nombre del Curso:
       input(type="text" name="nombre" required)
-      br
 
+      label(for="filtroDocentes") Filtrar Docentes:
+      input(type="text" id="filtroDocentes" oninput="filtrarDocentes()" placeholder="Buscar por nombre")
       //- Selección de docentes
-      label(for="docentes") Seleccionar Docentes:
-      br
-      each docente in docentes
-        input(type="checkbox" name="docentes" value=docente._id)
-        | #{docente.nombre}
-        br
-
+      p Seleccionar Docentes:
+      div.lista-checks.mb1
+        each docente in docentes
+          div.docente-item
+            input(type="checkbox" name="docentes" value=docente._id id=docente._id)
+            label(for=docente._id) #{docente.nombre}
+        
+        
       //- Campo de búsqueda para filtrar estudiantes
-      label(for="filtroEstudiantes") Buscar Estudiantes:
+      label(for="filtroEstudiantes") Filtrar Estudiantes:
       input(type="text" id="filtroEstudiantes" oninput="filtrarEstudiantes()" placeholder="Buscar por nombre")
-      br
-      br
-
+  
       //- Selección de estudiantes (con filtro)
-      label(for="estudiantes") Seleccionar Estudiantes:
-      br
-      each estudiante in estudiantes
-        div.estudiante-item
-          input(type="checkbox" name="estudiantes" value=estudiante._id)
-          label #{estudiante.nombre}
-        br
+      p Seleccionar Estudiantes:
+      div.lista-checks.mb1
+        each estudiante in estudiantes
+          div.estudiante-item
+            input(type="checkbox" name="estudiantes" value=estudiante._id id=estudiante._id)
+            label(for=estudiante._id) #{estudiante.nombre}
 
       button(type="submit") Guardar Curso

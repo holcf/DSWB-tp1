@@ -2,28 +2,24 @@ doctype html
 html
   head
     title Menú de inicio
+    link(rel='stylesheet', href='/styles/styles.css')
+
   body
     h1 Menú de inicio
     h2 Rol: #{usuario.rol.nombre}
     if usuario.rol.nombre == 'administrador'
       a(href="/docente/nuevo") Alta de docente
-      br
       a(href="/docente/lista") Listado de docentes
-      br
       a(href="/estudiante/nuevo") Alta de estudiante
-      br
       a(href="/estudiante/info") Ver estudiante
-      br
       a(href="/carga-notas") Carga de notas
-      br
       a(href="/curso/nuevo") Alta de curso
-      br
     
     if usuario.rol.nombre == 'docente'
       a(href="/carga-notas") Carga de notas
-      br
+    
     if usuario.rol.nombre == 'estudiante'
       a(href="/estudiante/info") Ver estudiante
-      br
+  
     br
     a(href="/logout") Cerrar sesión
