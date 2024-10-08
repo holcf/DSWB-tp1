@@ -3,6 +3,7 @@ import {
   nuevoCurso,
   postNuevoCurso,
   listarCursos,
+  editarNotas,
 } from "../controllers/curso-controller.js";
 
 export const cursoRouter = express.Router();
@@ -15,4 +16,7 @@ cursoRouter.post("/nuevo", postNuevoCurso);
 
 // Ruta para listar cursos
 cursoRouter.get("/lista", listarCursos);
+
+// Ruta para editar notas
+cursoRouter.get("/editar/:id", editarNotas);
 

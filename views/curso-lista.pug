@@ -9,6 +9,7 @@ html
     h1 Listado de Cursos
  
     each curso in cursos
+      - var cursoId = curso._id
       div(style="border: 1px solid grey; padding: 1rem; margin: 1rem; min-width: 600px") 
         h2 Curso: #{curso.nombre}
         br
@@ -21,7 +22,6 @@ html
                 li #{docente.nombre} (#{docente.dni})
             else
               p No tiene docentes asignados
-
         br
         div
           details
@@ -32,5 +32,6 @@ html
                 p Calificacion: #{estudiante.calificacion}
             else
               p No tiene estudiantes asignados
-            
+        br
+        a(href="/curso/editar/"+ cursoId) Editar Notas      
           

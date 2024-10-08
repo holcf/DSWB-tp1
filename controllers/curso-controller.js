@@ -46,3 +46,18 @@ export async function listarCursos(req, res) {
     });
   }
 }
+
+export async function editarNotas(req, res) {
+  try {
+    const curso = await Curso.findById(req.params.id).populate(
+      "docentes estudiantes.estudiante"
+    );
+    res.render("curso-editar-notas", { curso });
+  } catch (error) {
+    console.error("--- Editar Notas | Error al obtener datos >>> ", error);
+    res.status(500).render("error", {
+      message: "Editar Notas | Error interno del servidor.",
+      errorCode: 500,
+    });
+  }
+}
