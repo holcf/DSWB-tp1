@@ -6,11 +6,12 @@
 [x] listado de cursos
 [ ] edición de curso, para agregar o quitar docentes y estudiantes?
 [x] Carga de notas en curso (para docentes)
-[ ] La carga de notas está pero por ahora se accede entrando al listado de cursos (admin) y ahi en cada curso hay un acceso a la edicion. Faltaría hacer que cuando un docente entre solo pueda ver y editar sus cursos.
+[x] cuando se loguea un docente muestra los cursos que tiene asignados para que pueda editar las notas
 [ ] Consulta de información y notas de cada estudiante para cuando se ingresa como estudiante/familiar.
 [x] Que se cree un usuario cuando se hace un alta de docente o de estudiante.
 [ ] CSS para las plantillas
 [ ] testing
+[ ] checkear que haya suficientes datos de inicio para probar todas las funcionalidades
 
 **Documentación**
 
