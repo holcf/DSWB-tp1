@@ -1,4 +1,4 @@
-import { Estudiante, Curso } from "../models/models.js";
+import { Estudiante, Curso, Usuario, Rol } from "../models/models.js";
 
 export async function postNuevoEstudiante(req, res) {
   try {
@@ -15,11 +15,13 @@ export async function postNuevoEstudiante(req, res) {
 
     await nuevoEstudiante.save();
 
+    const doc = await Estudiante.findOne({ dni: nuevoEstudiante.dni });
+    const listaRoles = await Rol.find();
     const nuevoUsuario = new Usuario({
       nombre: nuevoEstudiante.dni,
       password: nuevoEstudiante.dni,
-      rol: "estudiante",
-      estudiante: nuevoEstudiante._id,
+      rol: listaRoles[2]._id,
+      estudiante: doc._id,
       docente: null,
     });
 
