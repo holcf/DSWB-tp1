@@ -1,5 +1,7 @@
 # Tareas pendientes
 
+//FIXME: al guardar un curso nuevo, si hay un solo estudiante o un solo docente, los datos en el body no van como array, por lo que no se puede hacer el map a la hora de guardarlos, hay que validar si es uno o varios antes de guardar.
+
 [x] alta de estudiantes (solo para admin)
 [x] alta de docentes (solo para admin)
 [x] alta de cursos (solo para admin). Incluído poder asignarle estudiantes y docentes al curso.
