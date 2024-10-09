@@ -26,7 +26,7 @@ html
       div
         details
           summary(open) Estudiantes:
-          if curso.estudiantes.length > 0
+          if curso.estudiantes
             form(action="/curso/editar/"+curso._id id="form-editar-notas" method="POST")
               each estudiante in curso.estudiantes
                 p Nombre:  #{estudiante.estudiante.nombre}
