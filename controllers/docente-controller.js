@@ -36,7 +36,8 @@ export async function listarDocentes(req, res) {
   }
 }
 
-//TODO: cuando sepamos que tipo de login vamos a usar hay que ver si acá y en el alta de estudiantes creamos al mismo tiempo un Usuario del sistema, o si hacemos el alta aparte, el tema de la contraseña, etc.
+
+
 export async function postNuevoDocente(req, res) {
   try {
     const nuevoDocente = new Docente(req.body);

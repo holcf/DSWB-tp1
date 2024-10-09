@@ -33,6 +33,16 @@ export async function postNuevoCurso(req, res) {
       docentes: docentes,
       estudiantes: estudiantes,
     });
+
+    const cursoExist = await Curso.findOne({ nombre: nuevoCurso.nombre });
+    if (cursoExist) {
+      return res.render("curso-nuevo", {
+        docentes,
+        estudiantes,
+        error: "No se guardo el curso nuevo. Ya existe uno con ese nombre.",
+      });
+    }
+
     await nuevoCurso.save();
     //FIXME: ponerle hora
     //FIXME no me convence que muestre el curso nuevamente como si fuera para un alta... tal vez mostrar una plantilla de éxito nomas, o de exito y con un link para editar el curso.

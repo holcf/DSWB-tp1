@@ -15,7 +15,7 @@ html
         br
         div
           details
-            summary Docentes: #{curso.docentes.length}
+            summary Docentes:
             if curso.docentes
               ul
               each docente in curso.docentes
@@ -25,13 +25,18 @@ html
         br
         div
           details
-            summary Estudiantes: #{curso.estudiantes.length}
-            if curso.estudiantes.length > 0
+            summary Estudiantes:
+            if curso.estudiantes
               each estudiante in curso.estudiantes
                 p Nombre:  #{estudiante.estudiante.nombre}
-                p Calificacion: #{estudiante.calificacion}
+                if estudiante.calificacion
+                  p Calificacion: #{estudiante.calificacion}
+                else 
+                  p Calificacion: Sin calificar
             else
               p No tiene estudiantes asignados
         br
         a(href="/curso/editar/"+ cursoId) Editar Notas      
-          
+    br
+    a(href="/") Volver al inicio
+    br
