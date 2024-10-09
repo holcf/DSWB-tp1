@@ -17,7 +17,36 @@ html
       a(href="/curso/lista") Listado de cursos
     
     if usuario.rol.nombre == 'docente'
-      a(href="/carga-notas") Carga de notas
+      if cursos 
+        each curso in cursos
+          - var cursoId = curso._id
+          div(style="border: 1px solid grey; padding: 1rem; margin: 1rem; min-width: 600px") 
+            h2 Curso: #{curso.nombre}
+            br
+            div
+              details
+                summary Docentes:
+                if curso.docentes
+                  ul
+                  each docente in curso.docentes
+                    li #{docente.nombre} (#{docente.dni})
+                else
+                  p No tiene docentes asignados
+            br
+            div
+              details
+                summary Estudiantes:
+                if curso.estudiantes
+                  each estudiante in curso.estudiantes
+                    p Nombre:  #{estudiante.estudiante.nombre}
+                    if estudiante.calificacion
+                      p Calificacion: #{estudiante.calificacion}
+                    else 
+                      p Calificacion: Sin calificar
+                else
+                  p No tiene estudiantes asignados
+            br
+            a(href="/curso/editar/"+ cursoId) Editar Notas      
     
     if usuario.rol.nombre == 'estudiante'
       a(href="/estudiante/info") Ver estudiante

@@ -14,8 +14,8 @@ html
  
     div(style="border: 1px solid grey; padding: 1rem; margin: 1rem; min-width: 600px") 
       div
-        details
-          summary(open) Docentes:
+        details(open)
+          summary Docentes:
           if curso.docentes
             ul
             each docente in curso.docentes
@@ -24,8 +24,8 @@ html
             p No tiene docentes asignados
       br
       div
-        details
-          summary(open) Estudiantes:
+        details(open)
+          summary Estudiantes:
           if curso.estudiantes
             form(action="/curso/editar/"+curso._id id="form-editar-notas" method="POST")
               each estudiante in curso.estudiantes

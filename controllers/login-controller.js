@@ -11,9 +11,10 @@ export async function login(req, res) {
     }
 
     //TODO: esto es una prueba para mostrar los cursos del docente en el menu mientras no haya session
+    let cursos = null;
     if (usuario.rol.nombre === "docente") {
       //buscar cursos que lo tengan como docente
-      const cursos = await Curso.find({ docentes: usuario.docente })
+      cursos = await Curso.find({ docentes: usuario.docente })
         .populate("docentes estudiantes.estudiante")
         .exec();
 
