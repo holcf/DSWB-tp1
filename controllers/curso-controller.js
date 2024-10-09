@@ -15,13 +15,32 @@ export async function nuevoCurso(req, res) {
 
 export async function postNuevoCurso(req, res) {
   try {
+    let estudiantes = null;
+    if (req.body.estudiantes && typeof req.body.estudiantes === "string") {
+      estudiantes = [{ estudiante: req.body.estudiantes }];
+    } else if (req.body.estudiantes && req.body.estudiantes.length > 1) {
+      estudiantes = req.body.estudiantes.map((id) => ({ estudiante: id }));
+    }
+
+    let docentes = null;
+    if (req.body.docentes && typeof req.body.docentes === "string") {
+      docentes = [req.body.docentes];
+    } else if (req.body.docentes && req.body.docentes.length > 1) {
+      docentes = req.body.docentes;
+    }
     const nuevoCurso = new Curso({
       nombre: req.body.nombre,
-      docentes: req.body.docentes,
-      estudiantes: req.body.estudiantes.map((id) => ({ estudiante: id })),
+      docentes: docentes,
+      estudiantes: estudiantes,
     });
     await nuevoCurso.save();
-    res.redirect("/curso/nuevo");
+    //FIXME: ponerle hora
+    //FIXME no me convence que muestre el curso nuevamente como si fuera para un alta... tal vez mostrar una plantilla de éxito nomas, o de exito y con un link para editar el curso.
+    res.render("curso-nuevo", {
+      docentes,
+      estudiantes,
+      success: "Curso guardardo con éxito",
+    });
   } catch (error) {
     console.error("--- Error al guardar curso >>> ", error);
     res.status(500).render("error", {

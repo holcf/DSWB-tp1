@@ -1,6 +1,6 @@
 # Tareas pendientes
 
-//FIXME: al guardar un curso nuevo, si hay un solo estudiante o un solo docente, los datos en el body no van como array, por lo que no se puede hacer el map a la hora de guardarlos, hay que validar si es uno o varios antes de guardar.
+//FIXME: dado que habilité que se puedan guardar cursos sin estudiantes y sin docentes ahora hay que validar en cada plantilla que haya datos antes de intentar mostrarlo.
 
 [x] alta de estudiantes (solo para admin)
 [x] alta de docentes (solo para admin)
