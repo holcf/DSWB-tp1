@@ -91,7 +91,7 @@ export async function editarNotasCurso(req, res) {
 
 export async function postEditarNotasCurso(req, res) {
   try {
-    const curso = await Curso.findById(req.params.id);
+    let curso = await Curso.findById(req.params.id);
 
     let estudiantes = [];
     for (let i = 0; i < req.body.estudianteId.length; i++) {
@@ -104,6 +104,10 @@ export async function postEditarNotasCurso(req, res) {
     await curso.save();
 
     let now = new Date();
+    //volver a buscar el curso para mostrar los datos por si se quiere seguir editando notas
+    curso = await Curso.findById(req.params.id).populate(
+      "docentes estudiantes.estudiante"
+    );
     res.render("curso-editar-notas", {
       curso,
       success: "Notas guardadas. " + now.toLocaleTimeString(),

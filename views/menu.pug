@@ -12,7 +12,6 @@ html
       a(href="/docente/lista") Listado de docentes
       a(href="/estudiante/nuevo") Alta de estudiante
       a(href="/estudiante/info") Ver estudiante
-      a(href="/carga-notas") Carga de notas
       a(href="/curso/nuevo") Alta de curso
       a(href="/curso/lista") Listado de cursos
     
@@ -49,7 +48,7 @@ html
             a(href="/curso/editar/"+ cursoId) Editar Notas      
     
     if usuario.rol.nombre == 'estudiante'
-      a(href="/estudiante/info/"+usuario.estudiante) Ver cursos y notas
+      a(href="/estudiante/ver/"+usuario.estudiante) Ver cursos y notas
   
     br
     a(href="/logout") Cerrar sesión

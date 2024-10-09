@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title Información de Estudiante
+    link(rel='stylesheet', href='/styles/styles.css')
+
+  body
+    h1 Información del Estudiante  
+    div
+      p Nombre: #{estudiante.nombre}
+      p DNI: #{estudiante.dni}
+    br
+    if cursos 
+      each curso of cursos
+        - var cursoId = curso._id
+        div(style="border: 1px solid grey; padding: 1rem; margin: 1rem; min-width: 600px") 
+          p Curso: #{curso.curso} - Calificación: #{curso.calificacion}
+          br
+    br
+    a(href="/") Volver al inicio
+    br
