@@ -49,7 +49,7 @@ html
             a(href="/curso/editar/"+ cursoId) Editar Notas      
     
     if usuario.rol.nombre == 'estudiante'
-      a(href="/estudiante/info") Ver estudiante
+      a(href="/estudiante/info/"+usuario.estudiante) Ver cursos y notas
   
     br
     a(href="/logout") Cerrar sesión

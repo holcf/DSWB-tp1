@@ -10,6 +10,7 @@ export async function login(req, res) {
       return res.render("login", { error: "Usuario o contraseña incorrectos" });
     }
 
+    console.log("usuario >>> ", usuario);
     //esto para mostrar los cursos del docente en el menu mientras no haya session
     let cursos = null;
     if (usuario.rol.nombre === "docente") {
@@ -17,6 +18,8 @@ export async function login(req, res) {
         .populate("docentes estudiantes.estudiante")
         .exec();
     }
+
+    
 
     res.render("menu", { usuario, cursos });
 

@@ -16,7 +16,7 @@ export async function postNuevoEstudiante(req, res) {
     await nuevoEstudiante.save();
 
     const doc = await Estudiante.findOne({ dni: nuevoEstudiante.dni });
-    const rol = await Rol.findOne({ nombre: "docente" });
+    const rol = await Rol.findOne({ nombre: "estudiante" });
     const nuevoUsuario = new Usuario({
       nombre: nuevoEstudiante.dni,
       password: nuevoEstudiante.dni,
