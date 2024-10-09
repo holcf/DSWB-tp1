@@ -1,4 +1,4 @@
-import { Usuario } from "../models/models.js";
+import { Usuario, Curso } from "../models/models.js";
 
 export async function login(req, res) {
   const { nombre, password } = req.body;
@@ -10,7 +10,17 @@ export async function login(req, res) {
       return res.render("login", { error: "Usuario o contraseña incorrectos" });
     }
 
-    res.render("menu", { usuario });
+    //TODO: esto es una prueba para mostrar los cursos del docente en el menu mientras no haya session
+    if (usuario.rol.nombre === "docente") {
+      //buscar cursos que lo tengan como docente
+      const cursos = await Curso.find({ docentes: usuario.docente })
+        .populate("docentes estudiantes.estudiante")
+        .exec();
+
+      console.log("cursos >>> ", cursos);
+    }
+    console.log("usuario >>> ", usuario);
+    res.render("menu", { usuario, cursos });
 
     //TODO: pendiente a implementar cuando esté resulto el tema de la session
     //Guardar al usuario en la sesión

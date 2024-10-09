@@ -44,8 +44,6 @@ export async function postNuevoCurso(req, res) {
     }
 
     await nuevoCurso.save();
-    //FIXME: ponerle hora
-    //FIXME no me convence que muestre el curso nuevamente como si fuera para un alta... tal vez mostrar una plantilla de éxito nomas, o de exito y con un link para editar el curso.
     res.render("curso-nuevo", {
       docentes,
       estudiantes,
@@ -65,7 +63,7 @@ export async function listarCursos(req, res) {
     const cursos = await Curso.find().populate(
       "docentes estudiantes.estudiante"
     );
-    //console.log(cursos);
+
     res.render("curso-lista", { cursos });
   } catch (error) {
     console.error("--- Listado de Cursos | Error al obtener datos >>> ", error);

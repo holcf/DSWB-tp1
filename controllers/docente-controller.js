@@ -8,21 +8,22 @@ export async function listarDocentes(req, res) {
       .populate("docentes")
       .then((cursos) => {
         cursos.forEach((curso) => {
-          curso.docentes.forEach((docente) => {
-            let indexDocente = listadoDocentes.findIndex((d) =>
-              d._id.equals(docente._id)
-            );
-            if (listadoDocentes[indexDocente].cursos) {
-              listadoDocentes[indexDocente].cursos.push(curso.nombre);
-            } else {
-              listadoDocentes[indexDocente] = {
-                _id: docente._id,
-                nombre: docente.nombre,
-                dni: docente.dni,
-                cursos: [curso.nombre],
-              };
-            }
-          });
+          curso.docentes &&
+            curso.docentes.forEach((docente) => {
+              let indexDocente = listadoDocentes.findIndex((d) =>
+                d._id.equals(docente._id)
+              );
+              if (listadoDocentes[indexDocente].cursos) {
+                listadoDocentes[indexDocente].cursos.push(curso.nombre);
+              } else {
+                listadoDocentes[indexDocente] = {
+                  _id: docente._id,
+                  nombre: docente.nombre,
+                  dni: docente.dni,
+                  cursos: [curso.nombre],
+                };
+              }
+            });
         });
       });
 
@@ -36,8 +37,6 @@ export async function listarDocentes(req, res) {
   }
 }
 
-
-
 export async function postNuevoDocente(req, res) {
   try {
     const nuevoDocente = new Docente(req.body);
@@ -50,12 +49,14 @@ export async function postNuevoDocente(req, res) {
     await nuevoDocente.save();
 
     const doc = await Docente.findOne({ dni: nuevoDocente.dni });
-    const listaRoles = await Rol.find();
+    const rol = await Rol.findOne({ nombre: "docente" });
+
+    console.log("lista roles >>> ", rol.nombre, rol._id);
 
     const nuevoUsuario = new Usuario({
       nombre: nuevoDocente.dni,
       password: nuevoDocente.dni,
-      rol: listaRoles[1]._id,
+      rol: rol._id,
       docente: doc._id,
       estudiante: null,
     });
