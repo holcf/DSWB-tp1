@@ -7,7 +7,7 @@
 [ ] edición de curso, para agregar o quitar docentes y estudiantes?
 [x] Carga de notas en curso (para docentes)
 [x] cuando se loguea un docente muestra los cursos que tiene asignados para que pueda editar las notas
-[ ] Consulta de información y notas de cada estudiante para cuando se ingresa como estudiante/familiar.
+[x] Consulta de información y notas de cada estudiante para cuando se ingresa como estudiante/familiar.
 [x] Que se cree un usuario cuando se hace un alta de docente o de estudiante.
 [ ] CSS para las plantillas
 [ ] testing
