@@ -15,6 +15,16 @@ export async function postNuevoEstudiante(req, res) {
 
     await nuevoEstudiante.save();
 
+    const nuevoUsuario = new Usuario({
+      nombre: nuevoEstudiante.dni,
+      password: nuevoEstudiante.dni,
+      rol: "estudiante",
+      estudiante: nuevoEstudiante._id,
+      docente: null,
+    });
+
+    await nuevoUsuario.save();
+
     res.render("estudiante-nuevo", {
       success: "Estudiante guardardo con éxito",
     });

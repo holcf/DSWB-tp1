@@ -48,6 +48,16 @@ export async function postNuevoDocente(req, res) {
 
     await nuevoDocente.save();
 
+    const nuevoUsuario = new Usuario({
+      nombre: nuevoDocente.dni,
+      password: nuevoDocente.dni,
+      rol: "docente",
+      docente: nuevoDocente._id,
+      estudiante: null,
+    });
+
+    await nuevoUsuario.save();
+
     res.render("docente-nuevo", { success: "Docente guardardo con éxito" });
   } catch (error) {
     console.error("--- Error al guardar docente >>> ", error);

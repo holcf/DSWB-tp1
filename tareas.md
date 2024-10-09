@@ -6,7 +6,8 @@
 [x] listoado de cursos
 [x] Carga de notas en curso (para docentes)
 [ ] La carga de notas está pero por ahora se accede entrando al listado de cursos (admin) y ahi en cada curso hay un acceso a la edicion. Faltaría hacer que cuando un docente entre solo pueda ver y editar sus cursos.
-[ ] Consulta de información y notas de cada estudiante. Habría que crear algunos usuarios de estudiantes particulres y ver si alcanzan los que están de notas cargadas. ¿Administración tendría que poder ver las notas de todxs? ¿Lxs docentes tendrían que poder ver las notas de todxs lxs estudiantes de sus cursos?
+[ ] Consulta de información y notas de cada estudiante para cuando se ingresa como estudiante/familiar.
+[ ] Que se cree un usuario cuando se hace un alta de docente o de estudiante.
 [ ] CSS para las plantillas
 [ ] testing
 
