@@ -26,7 +26,7 @@ mongoose
   .connect(uri, {})
   .then(() => {
     console.log("Conectado a MongoDB");
-    //cargarDatosInicio();
+    cargarDatosInicio();
   })
   .catch((error) => console.log("Error al conectar a MongoDB:", error));
 

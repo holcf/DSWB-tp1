@@ -1,9 +1,35 @@
+import mongoose from "mongoose";
 import { Curso, Estudiante, Docente, Rol, Usuario } from "./models.js";
 
 /**
  * Carga datos de ejemplo en la base de datos.
  */
 export async function cargarDatosInicio() {
+  // Para borrar todas las colecciones
+  /* await Rol.deleteMany();
+  await Estudiante.deleteMany();
+  await Docente.deleteMany();
+  await Usuario.deleteMany();
+  await Curso.deleteMany(); */
+
+  // Verificar si hay datos en la base de datos
+  const countRoles = await Rol.countDocuments();
+  const countEstudiantes = await Estudiante.countDocuments();
+  const countDocentes = await Docente.countDocuments();
+  const countUsuarios = await Usuario.countDocuments();
+  const countCursos = await Curso.countDocuments();
+
+  if (
+    countRoles > 0 ||
+    countEstudiantes > 0 ||
+    countDocentes > 0 ||
+    countUsuarios > 0 ||
+    countCursos > 0
+  ) {
+    console.log("Datos de ejemplo ya cargados");
+    return;
+  }
+
   console.log("Cargando datos de ejemplo...");
 
   // Carga roles
