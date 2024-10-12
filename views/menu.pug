@@ -9,12 +9,11 @@ html(lang="es")
 
   body
     h1 Menú de inicio
-    h2 Rol: #{usuario.rol.nombre}
+    h2 Usuario: #{usuario.nombre} - Rol: #{usuario.rol.nombre}
     if usuario.rol.nombre == 'administrador'
       a(href="/docente/nuevo") Alta de docente
       a(href="/docente/lista") Listado de docentes
       a(href="/estudiante/nuevo") Alta de estudiante
-      a(href="/estudiante/info") Ver estudiante
       a(href="/curso/nuevo") Alta de curso
       a(href="/curso/lista") Listado de cursos
     

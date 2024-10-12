@@ -8,12 +8,13 @@ html(lang="es")
 
   body
     p Para ingresar como administrador hacerlo con el usuario "admin"/"admin".
-    p Para probar las opciones de docentes y estudiantes ingresar con:   
+    p Para probar las opciones de docente ingresar con "4444"/"4444".
+    p Para probar las opciones de estudiante ingresar con "9999"/"9999".   
     h1 Iniciar sesión
     if error
       p(style="color: red") #{error}
     form(action="/" method="POST" id="login-form")
-      label(for="nombre") Nombre:
+      label(for="nombre") DNI / Usuario:
       input(type="text" name="nombre" value="admin" required)
       br
       label(for="password") Contraseña:

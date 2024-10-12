@@ -31,7 +31,7 @@ export async function cargarDatosInicio() {
     { nombre: "Pedro Martínez", dni: "78901234" },
     { nombre: "Lucía Fernández", dni: "89012345" },
     { nombre: "José Ramírez", dni: "90123456" },
-    { nombre: "Elena Castro", dni: "01234567" },
+    { nombre: "Elena Castro", dni: "9999" },
     { nombre: "Sofía López", dni: "98765432" },
     { nombre: "Miguel González", dni: "87654321" },
     { nombre: "Carmen Ruiz", dni: "76543210" },
@@ -68,7 +68,7 @@ export async function cargarDatosInicio() {
     { nombre: "Juan Pérez", dni: "123456" },
     { nombre: "María Gómez", dni: "234567" },
     { nombre: "Luis Rodríguez", dni: "345678" },
-    { nombre: "Ana Torres", dni: "456789" },
+    { nombre: "Ana Torres", dni: "4444" },
     { nombre: "Carlos Sánchez", dni: "567890" },
     { nombre: "Laura Díaz", dni: "678901" },
     { nombre: "Pedro Martínez", dni: "789012" },
@@ -133,6 +133,7 @@ export async function cargarDatosInicio() {
         { estudiante: listaEstudiantes[2]._id, calificacion: 9 },
         { estudiante: listaEstudiantes[3]._id, calificacion: 6 },
         { estudiante: listaEstudiantes[4]._id, calificacion: 7 },
+        { estudiante: listaEstudiantes[9]._id, calificacion: 2 },
       ],
     },
     {
@@ -152,13 +153,14 @@ export async function cargarDatosInicio() {
     },
     {
       nombre: "Historia",
-      docentes: [listaDocentes[4]._id, listaDocentes[5]._id],
+      docentes: [listaDocentes[3]._id, listaDocentes[5]._id],
       estudiantes: [
         { estudiante: listaEstudiantes[10]._id, calificacion: 7 },
         { estudiante: listaEstudiantes[11]._id, calificacion: 6 },
         { estudiante: listaEstudiantes[12]._id, calificacion: 8 },
         { estudiante: listaEstudiantes[13]._id, calificacion: 9 },
         { estudiante: listaEstudiantes[14]._id, calificacion: 7 },
+        { estudiante: listaEstudiantes[9]._id, calificacion: 8 },
       ],
     },
   ];
