@@ -1,5 +1,15 @@
 import { Docente, Curso, Usuario, Rol } from "../models/models.js";
 
+/**
+ * Controlador para la vista de alta de docente
+ */
+export function nuevoDocente(req, res) {
+  res.render("docente-nuevo");
+}
+
+/**
+ * Controlador para la vista de
+ */
 export async function listarDocentes(req, res) {
   try {
     const listadoDocentes = await Docente.find();
@@ -37,6 +47,10 @@ export async function listarDocentes(req, res) {
   }
 }
 
+/**
+ * Controlador para guardar un nuevo docente. Además crea un usuario para
+ * ese docente.
+ */
 export async function postNuevoDocente(req, res) {
   try {
     const nuevoDocente = new Docente(req.body);
@@ -50,8 +64,6 @@ export async function postNuevoDocente(req, res) {
 
     const doc = await Docente.findOne({ dni: nuevoDocente.dni });
     const rol = await Rol.findOne({ nombre: "docente" });
-
-    console.log("lista roles >>> ", rol.nombre, rol._id);
 
     const nuevoUsuario = new Usuario({
       nombre: nuevoDocente.dni,

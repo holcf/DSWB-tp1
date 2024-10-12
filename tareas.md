@@ -4,14 +4,17 @@
 [x] alta de docentes (solo para admin)
 [x] alta de cursos (solo para admin). Incluído poder asignarle estudiantes y docentes al curso.
 [x] listado de cursos
-[ ] edición de curso, para agregar o quitar docentes y estudiantes?
 [x] Carga de notas en curso (para docentes)
 [x] cuando se loguea un docente muestra los cursos que tiene asignados para que pueda editar las notas
 [x] Consulta de información y notas de cada estudiante para cuando se ingresa como estudiante/familiar.
 [x] Que se cree un usuario cuando se hace un alta de docente o de estudiante.
 [ ] CSS para las plantillas
-[ ] testing
 [ ] checkear que haya suficientes datos de inicio para probar todas las funcionalidades
+
+_Tareas que creo que no son obligatorias pero harían al funcionamiento de la app (podría quedar para la siguiente entrega):_
+[ ] que se pueda cambiar la contraseña
+[ ] edición de curso, para agregar o quitar docentes y estudiantes
+[ ] tests unitarios y de integración o E2E
 
 **Documentación**
 

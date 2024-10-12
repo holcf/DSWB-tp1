@@ -1,4 +1,9 @@
 import { Docente, Estudiante, Curso } from "../models/models.js";
+
+/**
+ * Controlador para la vista de alta de curso. Obtiene los docentes
+ * y estudiantes para mostrar en el formulario.
+ */
 export async function nuevoCurso(req, res) {
   try {
     const docentes = await Docente.find();
@@ -13,13 +18,23 @@ export async function nuevoCurso(req, res) {
   }
 }
 
+/**
+ * Controlador para guardar un nuevo curso. Es llamado cuando se envía el
+ * formulario de alta de curso.
+ * Recibe los datos del formulario y los guarda en la base de datos.
+ */
 export async function postNuevoCurso(req, res) {
   try {
+    // Le damos formato a los datos de estudiantes y docentes del formulario
+    // para guardarlos en la base de datos
     let estudiantes = null;
     if (req.body.estudiantes && typeof req.body.estudiantes === "string") {
       estudiantes = [{ estudiante: req.body.estudiantes }];
     } else if (req.body.estudiantes && req.body.estudiantes.length > 1) {
-      estudiantes = req.body.estudiantes.map((id) => ({ estudiante: id }));
+      estudiantes = req.body.estudiantes.map((id) => ({
+        estudiante: id,
+        calificacion: null,
+      }));
     }
 
     let docentes = null;
@@ -34,6 +49,7 @@ export async function postNuevoCurso(req, res) {
       estudiantes: estudiantes,
     });
 
+    // Verificar si ya existe un curso con el mismo nombre
     const cursoExist = await Curso.findOne({ nombre: nuevoCurso.nombre });
     if (cursoExist) {
       return res.render("curso-nuevo", {
@@ -58,8 +74,13 @@ export async function postNuevoCurso(req, res) {
   }
 }
 
+/**
+ * Controlador para mostrar la lista de cursos. Obtiene los cursos
+ * de la base de datos y los muestra en la vista.
+ */
 export async function listarCursos(req, res) {
   try {
+    // Obtenemos los cursos junto con los datos de docentes y estudiantes
     const cursos = await Curso.find().populate(
       "docentes estudiantes.estudiante"
     );
@@ -74,6 +95,10 @@ export async function listarCursos(req, res) {
   }
 }
 
+/**
+ * Controlador para mostrar la vista de edición de notas de un curso.
+ * Obtiene el curso de la base de datos y lo muestra en la vista.
+ */
 export async function editarNotasCurso(req, res) {
   try {
     const curso = await Curso.findById(req.params.id).populate(
@@ -89,10 +114,17 @@ export async function editarNotasCurso(req, res) {
   }
 }
 
+/**
+ * Controlador para guardar las notas editadas de un curso.
+ * Recibe los datos del formulario y los guarda en la base de datos.
+ */
+
 export async function postEditarNotasCurso(req, res) {
   try {
     let curso = await Curso.findById(req.params.id);
 
+    // Le damos formato a los datos de estudiantes y calificaciones
+    // del formulario
     let estudiantes = [];
     for (let i = 0; i < req.body.estudianteId.length; i++) {
       estudiantes.push({
@@ -103,11 +135,12 @@ export async function postEditarNotasCurso(req, res) {
     curso.estudiantes = estudiantes;
     await curso.save();
 
-    let now = new Date();
-    //volver a buscar el curso para mostrar los datos por si se quiere seguir editando notas
+    //traemos nuevamente los datos del curso para mostrarlos si se quiere seguir editando notas
     curso = await Curso.findById(req.params.id).populate(
       "docentes estudiantes.estudiante"
     );
+
+    let now = new Date();
     res.render("curso-editar-notas", {
       curso,
       success: "Notas guardadas. " + now.toLocaleTimeString(),

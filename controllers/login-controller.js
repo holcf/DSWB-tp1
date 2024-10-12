@@ -1,17 +1,24 @@
 import { Usuario, Curso } from "../models/models.js";
 
+/**
+ * Controlador para la vista de login. Comprueba si el usuario y contraseña
+ * corresponden a un usuario registrado en la base de datos.
+ * Luego del login muestra la vista del menú (temporalmente hasta que se
+ * implementen las sesiones, cuando esté eso se redireccionará al menú con
+ * los datos del usuario).
+ */
 export async function login(req, res) {
   const { nombre, password } = req.body;
 
   try {
     const usuario = await Usuario.findOne({ nombre, password }).populate("rol");
-
     if (!usuario) {
       return res.render("login", { error: "Usuario o contraseña incorrectos" });
     }
 
-    console.log("usuario >>> ", usuario);
-    //esto para mostrar los cursos del docente en el menu mientras no haya session
+    //Si el usuario es docente busca los cursos en los que está para mostrarlos
+    //en su menú y poder acceder a ellos.
+    //Hay que hacerlo acá mientras no tengamos sesiones porque si se sale del menu a otra página con un redirect/get se pierde el req.body
     let cursos = null;
     if (usuario.rol.nombre === "docente") {
       cursos = await Curso.find({ docentes: usuario.docente })
@@ -19,11 +26,9 @@ export async function login(req, res) {
         .exec();
     }
 
-    
-
     res.render("menu", { usuario, cursos });
 
-    //TODO: pendiente a implementar cuando esté resulto el tema de la session
+    //TODO: pendiente a implementar cuando esté resulto el tema de las sesiones
     //Guardar al usuario en la sesión
     //req.usuario = usuario;
 
@@ -40,11 +45,13 @@ export async function login(req, res) {
   }
 }
 
-// Controlador para cerrar sesión
-export const logout = (req, res) => {
+/**
+ * Controlador para cerrar la sesión del usuario.
+ */
+export function logout(req, res) {
   //TODO: pendiente a implementar cuando esté resulto el tema de la session
   //req.session.destroy();
   //si no hay sesion habrìa que borrar usuario
   //req.usuario = null;
   res.redirect("/");
-};
+}
