@@ -1,5 +1,9 @@
 import express from "express";
-import { postLogin, logout } from "../controllers/login-controller.js";
+import {
+  postLogin,
+  logout,
+  getLogin,
+} from "../controllers/login-controller.js";
 
 export const loginRouter = express.Router();
 
