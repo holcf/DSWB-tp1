@@ -30,19 +30,22 @@ mongoose
   })
   .catch((error) => console.log("Error al conectar a MongoDB:", error));
 
-// Middleware para garantizar que no se pueda acceder a las rutas sin haberse logueado, es decir accediendo a las página mediante el menu principal al cual se llega vía login.
+// Middleware para garantizar que no se pueda acceder a las rutas sin haberse
+// logueado, es decir accediendo a las página mediante el menu principal al
+// cual se llega vía login.
 app.use((req, res, next) => {
   let referer = req.headers.referer;
-  //console.log("--- página solicitada ---", req.url, req.headers.referer);
 
   if (req.url === "/") {
     next();
   } else {
+    // deja entrar a la página si fue llamada desde otra página en localhost,
+    // es decir del menú, si se intenta acceder directamente a una página  sin
+    // haber pasado por el menú, redirige a 404
     if (referer && referer.startsWith("http://localhost") && req.url !== "/") {
       next();
     } else {
       res.status(404).render("404");
-      //res.redirect("/");
     }
   }
 });
