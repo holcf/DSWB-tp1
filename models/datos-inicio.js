@@ -1,7 +1,12 @@
 import { Curso, Estudiante, Docente, Rol, Usuario } from "./models.js";
 
+/**
+ * Carga datos de ejemplo en la base de datos.
+ */
 export async function cargarDatosInicio() {
   console.log("Cargando datos de ejemplo...");
+
+  // Carga roles
   const roles = [
     { nombre: "administrador" },
     { nombre: "docente" },
@@ -15,6 +20,7 @@ export async function cargarDatosInicio() {
     console.error("Roles. Error al cargar datos de ejemplo:", error.message);
   }
 
+  // Carga estudiantes
   const estudiantes = [
     { nombre: "Juan Pérez", dni: "1234" },
     { nombre: "María Gómez", dni: "123455" },
@@ -57,6 +63,7 @@ export async function cargarDatosInicio() {
     );
   }
 
+  // Carga docentes
   const docentes = [
     { nombre: "Juan Pérez", dni: "123456" },
     { nombre: "María Gómez", dni: "234567" },
@@ -75,6 +82,7 @@ export async function cargarDatosInicio() {
     console.error("Docentes. Error al cargar datos de ejemplo:", error.message);
   }
 
+  // Carga un usuario admin, y los usuarios asociados a estudiantes y docentes
   const listaEstudiantes = await Estudiante.find();
   const listaDocentes = await Docente.find();
   const listaRoles = await Rol.find();
@@ -83,20 +91,6 @@ export async function cargarDatosInicio() {
       nombre: "admin",
       password: "admin",
       rol: listaRoles[0]._id,
-      estudiante: null,
-      docente: null,
-    },
-    {
-      nombre: "docente",
-      password: "docente",
-      rol: listaRoles[1]._id,
-      estudiante: null,
-      docente: null,
-    },
-    {
-      nombre: "estudiante",
-      password: "estudiante",
-      rol: listaRoles[2]._id,
       estudiante: null,
       docente: null,
     },
@@ -128,6 +122,7 @@ export async function cargarDatosInicio() {
     console.error("Usuarios. Error al cargar datos de ejemplo:", error.message);
   }
 
+  // Carga cursos
   const cursos = [
     {
       nombre: "Matemática",

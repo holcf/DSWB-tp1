@@ -1,11 +1,13 @@
 import express from "express";
-import { login, logout } from "../controllers/login-controller.js";
+import { postLogin, logout } from "../controllers/login-controller.js";
 
 export const loginRouter = express.Router();
 
-loginRouter.get("/", (req, res) => {
-  res.render("login");
-});
+// Ruta para mostrar el formulario de login
+loginRouter.get("/", getLogin);
 
-loginRouter.post("/", login);
+// Ruta para procesar el formulario de login
+loginRouter.post("/", postLogin);
+
+// Ruta para cerrar la sesión del usuario
 loginRouter.get("/logout", logout);

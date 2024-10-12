@@ -8,8 +8,10 @@
 [x] cuando se loguea un docente muestra los cursos que tiene asignados para que pueda editar las notas
 [x] Consulta de información y notas de cada estudiante para cuando se ingresa como estudiante/familiar.
 [x] Que se cree un usuario cuando se hace un alta de docente o de estudiante.
+[ ] poner en la vista de login, que usuario de prueba usar como docente y cual como estudiante.
 [ ] CSS para las plantillas
 [ ] checkear que haya suficientes datos de inicio para probar todas las funcionalidades
+[ ] para la entega checkiar que el .env quede en el zip
 
 _Tareas que creo que no son obligatorias pero harían al funcionamiento de la app (podría quedar para la siguiente entrega):_
 [ ] que se pueda cambiar la contraseña

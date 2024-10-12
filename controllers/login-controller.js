@@ -1,13 +1,21 @@
 import { Usuario, Curso } from "../models/models.js";
 
 /**
- * Controlador para la vista de login. Comprueba si el usuario y contraseña
- * corresponden a un usuario registrado en la base de datos.
+ * Controlador para mostrar la vista de login.
+ */
+export function getLogin(req, res) {
+  res.render("login");
+}
+
+/**
+ * Controlador para procesar el formulario de login.
+ * Comprueba si el usuario y contraseña corresponden a un usuario
+ * registrado en la base de datos.
  * Luego del login muestra la vista del menú (temporalmente hasta que se
  * implementen las sesiones, cuando esté eso se redireccionará al menú con
  * los datos del usuario).
  */
-export async function login(req, res) {
+export async function postLogin(req, res) {
   const { nombre, password } = req.body;
 
   try {
