@@ -8,6 +8,7 @@ import { cargarDatosInicio } from "./models/datos-inicio.js";
 import { docenteRouter } from "./routes/docente-route.js";
 import { estudianteRouter } from "./routes/estudiante-route.js";
 import { cursoRouter } from "./routes/curso-route.js";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 const uri = process.env.MONGODB_URI;
@@ -16,8 +17,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(express.static(path.join(__dirname, "public")));
+console.log(__dirname);
+console.log(path.join(__dirname, "public"));
 
 app.set("view engine", "pug");
 app.set("views", "./views");

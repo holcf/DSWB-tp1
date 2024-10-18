@@ -20,6 +20,7 @@ export async function postLogin(req, res) {
 
   try {
     const usuario = await Usuario.findOne({ nombre, password }).populate("rol");
+    console.log(usuario, nombre, password);
     if (!usuario) {
       return res.render("login", { error: "Usuario o contraseña incorrectos" });
     }
