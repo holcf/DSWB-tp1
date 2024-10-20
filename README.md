@@ -1,6 +1,14 @@
-# TP1
+# Grupo ondaViñasLopezHolc -Primer Parcial - Desarrollo de Sistemas Web (Back End) - 2° B - 2024
 
-## Usuarios de prueba
+## Instalación
+
+Instalar dependencias:
+
+```bash
+npm install
+```
+
+## Prueba de la aplicación
 
 Para ingresar al sistema, se pueden utilizar los siguientes usuarios/contraseña de prueba:
 
