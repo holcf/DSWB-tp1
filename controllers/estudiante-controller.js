@@ -15,7 +15,6 @@ export function nuevoEstudiante(req, res) {
 export async function verEstudiante(req, res) {
   let estudiante = await Estudiante.findById(req.params.id);
   let cursos = await buscarCursosPorEstudiante(req.params.id);
-  console.log("cursos", cursos);
   res.render("estudiante-ver", { estudiante, cursos });
 }
 

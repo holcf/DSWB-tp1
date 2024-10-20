@@ -21,8 +21,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, "public")));
-console.log(__dirname);
-console.log(path.join(__dirname, "public"));
 
 app.set("view engine", "pug");
 app.set("views", "./views");

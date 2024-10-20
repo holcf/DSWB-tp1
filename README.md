@@ -8,6 +8,20 @@ Instalar dependencias:
 npm install
 ```
 
+## Ejecución
+
+Para ejecutar la aplicación con nodemon, se debe correr el siguiente comando:
+
+```bash
+npm run dev
+```
+
+Para ejecutar la aplicación con node, se debe correr el siguiente comando:
+
+```bash
+node app.js
+```
+
 ## Prueba de la aplicación
 
 Para ingresar al sistema, se pueden utilizar los siguientes usuarios/contraseña de prueba:
