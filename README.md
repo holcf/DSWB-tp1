@@ -4,6 +4,7 @@
 
 - Utilización de cookies y JWT para la autenticación de usuarios
 - Middleware para verificar la autenticación de usuarios y redireccionamiento.
+- Opción "Recordarme" en el login para cambiar la duración de la cookie/token (1 hora si no se selecciona, 30 días si se selecciona)
 - Hash de contraseñas
 
 ## Instalación

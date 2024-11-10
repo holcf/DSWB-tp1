@@ -19,6 +19,7 @@ export function getLogin(req, res) {
 export async function postLogin(req, res) {
   const { nombre, password, rememberMe } = req.body;
 
+  console.log("rememberMe: ", rememberMe);
   // Si ya hay una cookie con el token redirigimos al menú
   if (req.cookies?.token) {
     res.redirect("/menu");
@@ -38,7 +39,7 @@ export async function postLogin(req, res) {
     const token = await createToken(
       {
         usuario: usuario,
-        rememberMe: rememberMe || false,
+        rememberMe: rememberMe || null,
       },
       getSecretKey()
     );
