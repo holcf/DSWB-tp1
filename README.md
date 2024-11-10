@@ -3,6 +3,7 @@
 ## Cambios realizados para la segunda entrega
 
 - Utilización de cookies y JWT para la autenticación de usuarios
+- Middleware para verificar la autenticación de usuarios y redireccionamiento.
 - //TODO: hash de contraseñas
 
 ## Instalación
