@@ -19,7 +19,6 @@ export function getLogin(req, res) {
 export async function postLogin(req, res) {
   const { nombre, password, rememberMe } = req.body;
 
-  console.log("rememberMe: ", rememberMe);
   // Si ya hay una cookie con el token redirigimos al menú
   if (req.cookies?.token) {
     res.redirect("/menu");

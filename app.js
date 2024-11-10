@@ -62,16 +62,6 @@ app.listen(PORT, () => {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Middleware para verificar el rol del usuario
-function verifyRole(req, res, next) {
-  console.log("Verificando rol", req.body.payload.usuario, req.url, req.baseUrl, req.params.id);
-  next();
-  /*   if (req.body.payload.usuario.rol.nombre === "docente") {
-    next();
-  } else {
-    res.status(401).json({ error: "No Autorizado" });
-  } */
-}
 // Conexión a la base de datos
 
 async function connectMongo(uri) {

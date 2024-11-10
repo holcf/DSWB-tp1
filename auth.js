@@ -3,11 +3,12 @@ import { jwtVerify } from "jose/jwt/verify";
 import crypto from "crypto";
 import { Curso } from "./models/models.js";
 
+/**
+ * Middleware para verificar el token de autenticación.
+ */
 export async function verifyToken(req, res, next) {
   // obtenemos el token de la cookie
   let token = req.cookies?.token;
-
-  console.log("reqUrl: ", req.url, req.url.includes("/api"), token);
   if (token) {
     try {
       // verificamos el token y colocamos los datos del usuario en el body
@@ -40,6 +41,9 @@ export async function verifyToken(req, res, next) {
   }
 }
 
+/**
+ * Función para crear un nuevo token de autenticación.
+ */
 export async function createToken(payload, secretKey) {
   let expirationTime = "1h";
   if (payload?.rememberMe) {
@@ -53,10 +57,16 @@ export async function createToken(payload, secretKey) {
   return newToken;
 }
 
+/**
+ * Función para hashear una contraseña
+ */
 export function hashPassword(password) {
   return crypto.createHash("sha256").update(password).digest("hex");
 }
 
+/**
+ * Función para obtener la clave secreta o generarla si no existe.
+ */
 export function getSecretKey() {
   /** @type {Uint8Array} */
   let secretKey;
@@ -83,6 +93,9 @@ export function getSecretKey() {
   }
 }
 
+/**
+ * Middleware para verificar si el usuario es administrador.
+ */
 export function verifyAdmin(req, res, next) {
   if (req.body.payload.usuario.rol.nombre === "administrador") {
     next();
@@ -91,6 +104,11 @@ export function verifyAdmin(req, res, next) {
   }
 }
 
+/**
+ * Middleware para verificar si el usuario es un estudiante que coincide con
+ * el id de la ruta.
+ * También permite el acceso a un administrador.
+ */
 export function verifyEstudiante(req, res, next) {
   if (
     req.body.payload.usuario._id === req.params.id ||
@@ -102,6 +120,9 @@ export function verifyEstudiante(req, res, next) {
   }
 }
 
+/**
+ * Middleware para verificar si el usuario es un docente o administrador.
+ */
 export function verifyListaCursos(req, res, next) {
   if (
     req.body.payload.usuario.rol.nombre === "administrador" ||
@@ -113,6 +134,10 @@ export function verifyListaCursos(req, res, next) {
   }
 }
 
+/**
+ * Middleware para verificar si el usuario es un docente del curso.
+ * También permite el acceso a un administrador.
+ */
 export async function verifyEdicionCurso(req, res, next) {
   let curso = await Curso.findById(req.params.id);
 

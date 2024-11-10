@@ -8,8 +8,7 @@ export async function nuevoCurso(req, res) {
   try {
     const docentes = await Docente.find();
     const estudiantes = await Estudiante.find();
-    console.log("docentes: ", docentes);
-    console.log("estudiantes: ", estudiantes);
+
     res.render("curso-nuevo", { docentes, estudiantes });
   } catch (error) {
     console.error("--- Alta de curso | Error al obtener datos >>> ", error);
@@ -27,8 +26,6 @@ export async function nuevoCurso(req, res) {
  */
 export async function postNuevoCurso(req, res) {
   try {
-    console.log("body: ", req.body);
-
     // Le damos formato a los datos de estudiantes y docentes del formulario
     // para guardarlos en la base de datos
     let estudiantes = null;
