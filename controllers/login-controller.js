@@ -1,4 +1,4 @@
-import { createToken, getSecretKey } from "../auth.js";
+import { hashPassword, createToken, getSecretKey } from "../auth.js";
 import { Usuario, Curso } from "../models/models.js";
 
 /**
@@ -26,7 +26,10 @@ export async function postLogin(req, res) {
   }
 
   try {
-    const usuario = await Usuario.findOne({ nombre, password }).populate("rol");
+    const usuario = await Usuario.findOne({
+      nombre,
+      password: hashPassword(password),
+    }).populate("rol");
 
     if (!usuario) {
       return res.render("login", { error: "Usuario o contraseña incorrectos" });

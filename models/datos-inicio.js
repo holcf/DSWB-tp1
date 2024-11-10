@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Curso, Estudiante, Docente, Rol, Usuario } from "./models.js";
+import { hashPassword } from "../auth.js";
 
 /**
  * Carga datos de ejemplo en la base de datos.
@@ -115,7 +116,7 @@ export async function cargarDatosInicio() {
   const usuarios = [
     {
       nombre: "admin",
-      password: "admin",
+      password: hashPassword("admin"),
       rol: listaRoles[0]._id,
       estudiante: null,
       docente: null,
@@ -125,7 +126,7 @@ export async function cargarDatosInicio() {
   listaEstudiantes.forEach((estudiante, index) => {
     usuarios.push({
       nombre: estudiante.dni,
-      password: estudiante.dni,
+      password: hashPassword(estudiante.dni),
       rol: listaRoles[2]._id,
       estudiante: estudiante._id,
       docente: null,
@@ -135,7 +136,7 @@ export async function cargarDatosInicio() {
   listaDocentes.forEach((docente, index) => {
     usuarios.push({
       nombre: docente.dni,
-      password: docente.dni,
+      password: hashPassword(docente.dni),
       rol: listaRoles[1]._id,
       estudiante: null,
       docente: docente._id,
