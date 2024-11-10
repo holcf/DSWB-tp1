@@ -111,7 +111,7 @@ export function verifyAdmin(req, res, next) {
  */
 export function verifyEstudiante(req, res, next) {
   if (
-    req.body.payload.usuario._id === req.params.id ||
+    req.body.payload.usuario.estudiante === req.params.id ||
     req.body.payload.usuario.rol.nombre === "administrador"
   ) {
     next();
