@@ -1,6 +1,7 @@
 import { SignJWT } from "jose";
 import { jwtVerify } from "jose/jwt/verify";
 import crypto from "crypto";
+import { Curso } from "./models/models.js";
 
 export async function verifyToken(req, res, next) {
   // obtenemos el token de la cookie
@@ -79,5 +80,53 @@ export function getSecretKey() {
     //console.error("No hay secret key en el archivo .env");
     //console.log("Usando secret key predeterminada.");
     return defaultSecretKey;
+  }
+}
+
+export function verifyAdmin(req, res, next) {
+  if (req.body.payload.usuario.rol.nombre === "administrador") {
+    next();
+  } else {
+    res.status(401).json({ error: "No Autorizado" });
+  }
+}
+
+export function verifyEstudiante(req, res, next) {
+  if (
+    req.body.payload.usuario._id === req.params.id ||
+    req.body.payload.usuario.rol.nombre === "administrador"
+  ) {
+    next();
+  } else {
+    res.status(401).json({ error: "No Autorizado" });
+  }
+}
+
+export function verifyListaCursos(req, res, next) {
+  if (
+    req.body.payload.usuario.rol.nombre === "administrador" ||
+    req.body.payload.usuario.rol.nombre === "docente"
+  ) {
+    next();
+  } else {
+    res.status(401).json({ error: "No Autorizado" });
+  }
+}
+
+export async function verifyEdicionCurso(req, res, next) {
+  let curso = await Curso.findById(req.params.id);
+
+  let auth = false;
+  curso.docentes.forEach((docente) => {
+    if (docente.toString() == req.body.payload.usuario.docente) {
+      auth = true;
+    }
+  });
+
+  console.log("curso: ", curso.docentes);
+  if (req.body.payload.usuario.rol.nombre === "administrador" || auth) {
+    next();
+  } else {
+    res.status(401).json({ error: "No Autorizado" });
   }
 }
