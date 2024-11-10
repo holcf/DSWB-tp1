@@ -6,6 +6,7 @@ export async function verifyToken(req, res, next) {
   // obtenemos el token de la cookie
   let token = req.cookies?.token;
 
+  console.log("reqUrl: ", req.url, req.url.includes("/api"), token);
   if (token) {
     try {
       // verificamos el token y colocamos los datos del usuario en el body
@@ -24,10 +25,14 @@ export async function verifyToken(req, res, next) {
       res.clearCookie("token");
       res.redirect("/");
     }
+  } else if (req.url.includes("/api")) {
+    console.log("No Autorizado");
+    res.status(401).json({ error: "No Autorizado" });
   }
   // si no hay token y la request no viene del login redirigimos al login
   // si no viene del token continúa (para evitar un loop)
   else if (req.url !== "/") {
+    console.log("Redirecting to /");
     res.redirect("/");
   } else {
     next();

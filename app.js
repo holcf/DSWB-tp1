@@ -11,6 +11,10 @@ import { cursoRouter } from "./routes/curso-route.js";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import { verifyToken } from "./auth.js";
+import { apiRouter } from "./routes/api-route.js";
+import { apiCursoRouter } from "./routes/api-curso-route.js";
+import { apiEstudianteRouter } from "./routes/api-estudiante-route.js";
+import { apiDocenteRouter } from "./routes/api-docente-route.js";
 
 dotenv.config();
 
@@ -31,6 +35,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
 app.set("views", "./views");
 
+// no mover, debe estar antes de verifyToken para que no se aplique a la ruta de login de la api
+app.use("/api", apiRouter);
+
 // Middleware para verificar el token y colocar los datos del usuario en el body
 app.use(verifyToken);
 
@@ -39,6 +46,9 @@ app.use(menuRouter);
 app.use("/docente", docenteRouter);
 app.use("/estudiante", estudianteRouter);
 app.use("/curso", cursoRouter);
+app.use("/api/cursos", apiCursoRouter);
+app.use("/api/estudiantes", apiEstudianteRouter);
+app.use("/api/docentes", apiDocenteRouter);
 
 app.use((req, res) => {
   res.status(404).render("404");
