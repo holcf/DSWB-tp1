@@ -7,7 +7,6 @@ import { Docente, Curso, Usuario, Rol } from "../models/models.js";
 export async function apiListarDocentes(req, res) {
   try {
     const listadoDocentes = await Docente.find();
-
     await Curso.find()
       .populate("docentes")
       .then((cursos) => {

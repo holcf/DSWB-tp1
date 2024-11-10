@@ -6,6 +6,8 @@
 - Middleware para verificar la autenticación de usuarios y redireccionamiento.
 - Opción "Recordarme" en el login para cambiar la duración de la cookie/token (1 hora si no se selecciona, 30 días si se selecciona)
 - Hash de contraseñas
+- API endpoints para las funciones de la aplicación (login, logout, alta de docentes, alta de estudiantes, alta de cursos, consulta de cursos, consulta de estudiantes, edición de notas del curso) para que puedan ser consumidas desde un frontend.
+- Middlewares en las rutas de las APIs, para verificar que el usuario que intenta acceder a un recurso tiene los permisos necesarios según su rol.
 
 ## Instalación
 
