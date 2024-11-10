@@ -1,3 +1,4 @@
+import { createToken, getSecretKey } from "../auth.js";
 import { Usuario, Curso } from "../models/models.js";
 
 /**
@@ -16,7 +17,13 @@ export function getLogin(req, res) {
  * los datos del usuario).
  */
 export async function postLogin(req, res) {
-  const { nombre, password } = req.body;
+  const { nombre, password, rememberMe } = req.body;
+
+  // Si ya hay una cookie con el token redirigimos al menú
+  if (req.cookies?.token) {
+    res.redirect("/menu");
+    return;
+  }
 
   try {
     const usuario = await Usuario.findOne({ nombre, password }).populate("rol");
@@ -25,26 +32,24 @@ export async function postLogin(req, res) {
       return res.render("login", { error: "Usuario o contraseña incorrectos" });
     }
 
-    //Si el usuario es docente busca los cursos en los que está para mostrarlos
-    //en su menú y poder acceder a ellos.
-    //Hay que hacerlo acá mientras no tengamos sesiones porque si se sale del menu a otra página con un redirect/get se pierde el req.body
-    let cursos = null;
-    if (usuario.rol.nombre === "docente") {
-      cursos = await Curso.find({ docentes: usuario.docente })
-        .populate("docentes estudiantes.estudiante")
-        .exec();
-    }
+    const token = await createToken(
+      {
+        usuario: usuario,
+        rememberMe: rememberMe || false,
+      },
+      getSecretKey()
+    );
 
-    res.render("menu", { usuario, cursos });
+    let cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000, //30d o 1h
+    };
 
-    //TODO: pendiente a implementar cuando esté resulto el tema de las sesiones
-    //Guardar al usuario en la sesión
-    //req.usuario = usuario;
-
-    // Redirigir al menú de inicio
-    //res.redirect("/");
-    // no hacemos el redirect porque es un get y se pierde el req.body si no se usa session
-    // res.render("menu", { usuario });
+    // enviamos la cookie con el token al cliente y redirijimos al menú
+    res.cookie("token", token, cookieOptions);
+    res.redirect("/menu");
   } catch (error) {
     console.error("--- Error en login >>> ", error);
     res.status(500).render("error", {
@@ -58,9 +63,7 @@ export async function postLogin(req, res) {
  * Controlador para cerrar la sesión del usuario.
  */
 export function logout(req, res) {
-  //TODO: pendiente a implementar cuando esté resulto el tema de la session
-  //req.session.destroy();
-  //si no hay sesion habrìa que borrar usuario
-  //req.usuario = null;
+  // Borramos la cookie con el token para cerrar la sesión
+  res.clearCookie("token");
   res.redirect("/");
 }

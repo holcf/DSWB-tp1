@@ -1,4 +1,9 @@
-# Grupo ondaViñasLopezHolc -Primer Parcial - Desarrollo de Sistemas Web (Back End) - 2° B - 2024
+# Grupo ondaViñasLopezHolc - Desarrollo de Sistemas Web (Back End) - 2° B - 2024
+
+## Cambios realizados para la segunda entrega
+
+- Utilización de cookies y JWT para la autenticación de usuarios
+- //TODO: hash de contraseñas
 
 ## Instalación
 
