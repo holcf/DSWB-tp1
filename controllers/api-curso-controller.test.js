@@ -8,14 +8,6 @@ import {
   apiListarCursos,
   apiEditarNotasCurso,
 } from "./api-curso-controller.js";
-import { app } from "../app.js";
-import { verify } from "crypto";
-import {
-  verifyAdmin,
-  verifyEdicionCurso,
-  verifyEstudiante,
-  verifyListaCursos,
-} from "../auth.js";
 
 describe("API Curso Controller", () => {
   // Mock del modelo Curso

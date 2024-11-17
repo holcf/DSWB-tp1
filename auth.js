@@ -1,6 +1,6 @@
 import { SignJWT } from "jose";
 import { jwtVerify } from "jose/jwt/verify";
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { Curso } from "./models/models.js";
 
 /**
