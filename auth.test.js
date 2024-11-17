@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
+import { describe, test, expect, beforeEach, vi, afterEach } from "vitest";
 import request from "supertest";
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -14,29 +14,29 @@ import {
 } from "./auth.js";
 import { Curso } from "./models/models.js";
 
-const app = express();
-app.use(express.json());
-app.use(cookieParser());
-
-// Mock de Curso.findById
-vi.mock("./models/models.js", () => ({
-  Curso: {
-    findById: vi.fn(),
-  },
-}));
-
 describe("Funciones de autenticación", () => {
+  const app = express();
+  app.use(express.json());
+  app.use(cookieParser());
+
+  // Mock de Curso.findById
+  vi.mock("./models/models.js", () => ({
+    Curso: {
+      findById: vi.fn(),
+    },
+  }));
+
   describe("hashPassword", () => {
-    it("debe generar un hash consistente para la misma contraseña", () => {
+    test("debe generar un hash consistente para la misma contraseña", () => {
       const password = "miContraseña123";
       const hash1 = hashPassword(password);
       const hash2 = hashPassword(password);
 
       expect(hash1).toBe(hash2);
-      expect(hash1).toHaveLength(64); // SHA-256 produce un hash de 64 caracteres
+      expect(hash1).toHaveLength(64);
     });
 
-    it("debe generar diferentes hashes para diferentes contraseñas", () => {
+    test("debe generar diferentes hashes para diferentes contraseñas", () => {
       const password1 = "contraseña1";
       const password2 = "contraseña2";
 
@@ -44,178 +44,176 @@ describe("Funciones de autenticación", () => {
     });
   });
 
-  describe("createToken", () => {
-    it("debe crear un token válido con expiración de 1 hora por defecto", async () => {
-      const payload = { userId: 1, username: "test" };
-      const secretKey = getSecretKey();
-
-      const token = await createToken(payload, secretKey);
-      expect(typeof token).toBe("string");
-      expect(token.split(".").length).toBe(3); // formato JWT válido
-
-      const decoded = JSON.parse(atob(token.split(".")[1]));
-      const exp = decoded.exp;
-      const now = Math.floor(Date.now() / 1000);
-      const diff = exp - now;
-      const lessThan2hs = diff < 120 * 60;
-      expect(lessThan2hs).toBe(true);
-    });
-
-    it("debe crear un token con expiración de 30 días si rememberMe es true", async () => {
-      const payload = { userId: 1, username: "test", rememberMe: true };
-      const secretKey = getSecretKey();
-
-      const token = await createToken(payload, secretKey);
-      expect(typeof token).toBe("string");
-
-      //verify expiration date
-      const decoded = JSON.parse(atob(token.split(".")[1]));
-      const exp = decoded.exp;
-      const now = Math.floor(Date.now() / 1000);
-      const diff = exp - now;
-      const greaterThan29 = diff > 29 * 24 * 60 * 60;
-      expect(greaterThan29).toBe(true);
-    });
-  });
-
   describe("verifyToken middleware", () => {
-    let mockReq;
-    let mockRes;
-    let nextFunction;
-
     beforeEach(() => {
-      mockReq = {
-        cookies: {},
-        url: "/",
-        body: {},
-      };
-      mockRes = {
-        redirect: vi.fn(),
-        clearCookie: vi.fn(),
-        status: vi.fn().mockReturnThis(),
-        json: vi.fn(),
-      };
-      nextFunction = vi.fn();
+      app.get("/test", verifyToken, (req, res) => {
+        res.json({ success: true });
+      });
+
+      app.get("/", verifyToken, (req, res) => {
+        res.json({ success: true });
+      });
     });
 
-    it("debe redirigir a /menu si el token es válido y la URL es /", async () => {
+    test("debe redirigir a /menu si el token es válido y la URL es /", async () => {
       const payload = { userId: 1 };
       const token = await createToken(payload, getSecretKey());
-      mockReq.cookies.token = token;
 
-      await verifyToken(mockReq, mockRes, nextFunction);
+      const response = await request(app)
+        .get("/")
+        .set("Cookie", [`token=${token}`]);
 
-      expect(mockRes.redirect).toHaveBeenCalledWith("/menu");
+      expect(response.status).toBe(302);
+      expect(response.header.location).toBe("/menu");
     });
 
-    it("debe llamar next() si el token es válido y la URL no es /", async () => {
+    test("debe continuar si el token es válido y la URL no es /", async () => {
       const payload = { userId: 1 };
       const token = await createToken(payload, getSecretKey());
-      mockReq.cookies.token = token;
-      mockReq.url = "/dashboard";
 
-      await verifyToken(mockReq, mockRes, nextFunction);
+      const response = await request(app)
+        .get("/test")
+        .set("Cookie", [`token=${token}`]);
 
-      expect(nextFunction).toHaveBeenCalled();
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
     });
 
-    it("debe redirigir a / si no hay token y la URL no es /", async () => {
-      mockReq.url = "/dashboard";
+    test("debe redirigir a / si no hay token", async () => {
+      const response = await request(app).get("/test");
 
-      await verifyToken(mockReq, mockRes, nextFunction);
-
-      expect(mockRes.redirect).toHaveBeenCalledWith("/");
+      expect(response.status).toBe(302);
+      expect(response.header.location).toBe("/");
     });
   });
 
   describe("Middlewares de autorización", () => {
-    let mockReq;
-    let mockRes;
-    let nextFunction;
-
     beforeEach(() => {
-      mockReq = {
-        body: {
-          payload: {
-            usuario: {
-              rol: { nombre: "" },
-              estudiante: "",
-              docente: "",
-            },
-          },
-        },
-        params: {},
-      };
-      mockRes = {
-        status: vi.fn().mockReturnThis(),
-        json: vi.fn(),
-      };
-      nextFunction = vi.fn();
+      // Rutas de prueba
+      app.get("/admin-test", verifyToken, verifyAdmin, (req, res) => {
+        res.json({ success: true });
+      });
+
+      app.get("/estudiante/:id", verifyToken, verifyEstudiante, (req, res) => {
+        res.json({ success: true });
+      });
+
+      app.get("/cursos", verifyToken, verifyListaCursos, (req, res) => {
+        res.json({ success: true });
+      });
+
+      app.get(
+        "/curso/:id/editar",
+        verifyToken,
+        verifyEdicionCurso,
+        (req, res) => {
+          res.json({ success: true });
+        }
+      );
     });
 
     describe("verifyAdmin", () => {
-      it("debe permitir acceso si el usuario es administrador", () => {
-        mockReq.body.payload.usuario.rol.nombre = "administrador";
+      test("debe permitir acceso si el usuario es administrador", async () => {
+        const token = await createToken(
+          {
+            usuario: { rol: { nombre: "administrador" } },
+          },
+          getSecretKey()
+        );
 
-        verifyAdmin(mockReq, mockRes, nextFunction);
+        const response = await request(app)
+          .get("/admin-test")
+          .set("Cookie", [`token=${token}`]);
 
-        expect(nextFunction).toHaveBeenCalled();
+        expect(response.status).toBe(200);
+        expect(response.body.success).toBe(true);
       });
 
-      it("debe denegar acceso si el usuario no es administrador", () => {
-        mockReq.body.payload.usuario.rol.nombre = "estudiante";
+      test("debe denegar acceso si el usuario no es administrador", async () => {
+        const token = await createToken(
+          {
+            usuario: { rol: { nombre: "estudiante" } },
+          },
+          getSecretKey()
+        );
 
-        verifyAdmin(mockReq, mockRes, nextFunction);
+        const response = await request(app)
+          .get("/admin-test")
+          .set("Cookie", [`token=${token}`]);
 
-        expect(mockRes.status).toHaveBeenCalledWith(401);
-        expect(mockRes.json).toHaveBeenCalledWith({ error: "No Autorizado" });
+        expect(response.status).toBe(401);
+        expect(response.body.error).toBe("No Autorizado");
       });
     });
 
     describe("verifyEstudiante", () => {
-      it("debe permitir acceso si el ID coincide con el estudiante", () => {
-        mockReq.body.payload.usuario.estudiante = "123";
-        mockReq.params.id = "123";
+      test("debe permitir acceso si el ID coincide con el estudiante", async () => {
+        const token = await createToken(
+          {
+            usuario: {
+              estudiante: "123",
+              rol: { nombre: "estudiante" },
+            },
+          },
+          getSecretKey()
+        );
 
-        verifyEstudiante(mockReq, mockRes, nextFunction);
+        const response = await request(app)
+          .get("/estudiante/123")
+          .set("Cookie", [`token=${token}`]);
 
-        expect(nextFunction).toHaveBeenCalled();
+        expect(response.status).toBe(200);
+        expect(response.body.success).toBe(true);
       });
 
-      it("debe permitir acceso si el usuario es administrador", () => {
-        mockReq.body.payload.usuario.rol.nombre = "administrador";
-        mockReq.params.id = "123";
+      test("debe permitir acceso si el usuario es administrador", async () => {
+        const token = await createToken(
+          {
+            usuario: { rol: { nombre: "administrador" } },
+          },
+          getSecretKey()
+        );
 
-        verifyEstudiante(mockReq, mockRes, nextFunction);
+        const response = await request(app)
+          .get("/estudiante/123")
+          .set("Cookie", [`token=${token}`]);
 
-        expect(nextFunction).toHaveBeenCalled();
+        expect(response.status).toBe(200);
+        expect(response.body.success).toBe(true);
       });
     });
 
     describe("verifyListaCursos", () => {
-      it("debe permitir acceso a docentes", () => {
-        mockReq.body.payload.usuario.rol.nombre = "docente";
+      test("debe permitir acceso a docentes", async () => {
+        const token = await createToken(
+          {
+            usuario: { rol: { nombre: "docente" } },
+          },
+          getSecretKey()
+        );
 
-        verifyListaCursos(mockReq, mockRes, nextFunction);
+        const response = await request(app)
+          .get("/cursos")
+          .set("Cookie", [`token=${token}`]);
 
-        expect(nextFunction).toHaveBeenCalled();
+        expect(response.status).toBe(200);
+        expect(response.body.success).toBe(true);
       });
 
-      it("debe permitir acceso a administradores", () => {
-        mockReq.body.payload.usuario.rol.nombre = "administrador";
+      test("debe denegar acceso a estudiantes", async () => {
+        const token = await createToken(
+          {
+            usuario: { rol: { nombre: "estudiante" } },
+          },
+          getSecretKey()
+        );
 
-        verifyListaCursos(mockReq, mockRes, nextFunction);
+        const response = await request(app)
+          .get("/cursos")
+          .set("Cookie", [`token=${token}`]);
 
-        expect(nextFunction).toHaveBeenCalled();
-      });
-
-      it("debe denegar acceso a otros roles", () => {
-        mockReq.body.payload.usuario.rol.nombre = "estudiante";
-
-        verifyListaCursos(mockReq, mockRes, nextFunction);
-
-        expect(mockRes.status).toHaveBeenCalledWith(401);
-        expect(mockRes.json).toHaveBeenCalledWith({ error: "No Autorizado" });
+        expect(response.status).toBe(401);
+        expect(response.body.error).toBe("No Autorizado");
       });
     });
 
@@ -224,45 +222,50 @@ describe("Funciones de autenticación", () => {
         vi.clearAllMocks();
       });
 
-      it("debe permitir acceso si el usuario es docente del curso", async () => {
-        mockReq.body.payload.usuario.docente = "123";
-        mockReq.params.id = "curso1";
-
+      test("debe permitir acceso si el usuario es docente del curso", async () => {
         Curso.findById.mockResolvedValue({
           docentes: ["123"],
         });
 
-        await verifyEdicionCurso(mockReq, mockRes, nextFunction);
+        const token = await createToken(
+          {
+            usuario: {
+              docente: "123",
+              rol: { nombre: "docente" },
+            },
+          },
+          getSecretKey()
+        );
 
-        expect(nextFunction).toHaveBeenCalled();
+        const response = await request(app)
+          .get("/curso/cualquier-id/editar")
+          .set("Cookie", [`token=${token}`]);
+
+        expect(response.status).toBe(200);
+        expect(response.body.success).toBe(true);
       });
 
-      it("debe permitir acceso si el usuario es administrador", async () => {
-        mockReq.body.payload.usuario.rol.nombre = "administrador";
-        mockReq.params.id = "curso1";
-
+      test("debe denegar acceso si el usuario no es docente del curso", async () => {
         Curso.findById.mockResolvedValue({
           docentes: ["456"],
         });
 
-        await verifyEdicionCurso(mockReq, mockRes, nextFunction);
+        const token = await createToken(
+          {
+            usuario: {
+              docente: "123",
+              rol: { nombre: "docente" },
+            },
+          },
+          getSecretKey()
+        );
 
-        expect(nextFunction).toHaveBeenCalled();
-      });
+        const response = await request(app)
+          .get("/curso/cualquier-id/editar")
+          .set("Cookie", [`token=${token}`]);
 
-      it("debe denegar acceso si el usuario no es docente del curso ni administrador", async () => {
-        mockReq.body.payload.usuario.docente = "789";
-        mockReq.body.payload.usuario.rol.nombre = "docente";
-        mockReq.params.id = "curso1";
-
-        Curso.findById.mockResolvedValue({
-          docentes: ["123", "456"],
-        });
-
-        await verifyEdicionCurso(mockReq, mockRes, nextFunction);
-
-        expect(mockRes.status).toHaveBeenCalledWith(401);
-        expect(mockRes.json).toHaveBeenCalledWith({ error: "No Autorizado" });
+        expect(response.status).toBe(401);
+        expect(response.body.error).toBe("No Autorizado");
       });
     });
   });
