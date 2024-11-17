@@ -5,35 +5,34 @@ import cookieParser from "cookie-parser";
 import { Usuario } from "../models/models.js";
 import { hashPassword, createToken, getSecretKey } from "../auth.js";
 import { apiLogin, apiLogout } from "./api-controller.js";
-// Mocks
-vi.mock("../models/models.js", () => ({
-  Usuario: {
-    findOne: vi.fn(),
-  },
-}));
-
-vi.mock(import("../auth.js"), async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...actual,
-    hashPassword: vi.fn((pass) => `hashed_${pass}`),
-    createToken: vi.fn(() => "mock_token"),
-    getSecretKey: vi.fn(() => "test_secret"),
-  };
-});
 
 describe("api-controller tests", () => {
-  let app;
+  // Mocks
+  vi.mock("../models/models.js", () => ({
+    Usuario: {
+      findOne: vi.fn(),
+    },
+  }));
+
+  vi.mock(import("../auth.js"), async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+      ...actual,
+      hashPassword: vi.fn((pass) => `hashed_${pass}`),
+      createToken: vi.fn(() => "mock_token"),
+      getSecretKey: vi.fn(() => "test_secret"),
+    };
+  });
+
+  const app = express();
+  app.use(express.json());
+  app.use(cookieParser());
+
+  app.post("/api/login", apiLogin);
+  app.get("/api/logout", apiLogout);
 
   beforeEach(() => {
     vi.clearAllMocks();
-
-    app = express();
-    app.use(express.json());
-    app.use(cookieParser());
-
-    app.post("/api/login", apiLogin);
-    app.get("/api/logout", apiLogout);
   });
 
   describe("POST /api/login", () => {

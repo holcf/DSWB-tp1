@@ -148,7 +148,6 @@ export async function verifyEdicionCurso(req, res, next) {
     }
   });
 
-  console.log("curso: ", curso.docentes);
   if (req.body.payload.usuario.rol.nombre === "administrador" || auth) {
     next();
   } else {

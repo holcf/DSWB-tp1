@@ -11,45 +11,39 @@ import {
 } from "./curso-controller.js";
 import { fileURLToPath } from "url";
 import path from "path";
- 
-// Mock del modelo Curso, Docente y Estudiante
-vi.mock("../models/models.js", () => ({
-  Curso: vi.fn().mockImplementation((data) => ({
-    ...data,
-    save: vi.fn().mockResolvedValue(undefined),
-  })),
-  Docente: {
-    find: vi.fn(),
-  },
-  Estudiante: {
-    find: vi.fn(),
-  },
-}));
 
 describe("Curso Controller", () => {
-  let app;
+  // Mock del modelo Curso, Docente y Estudiante
+  vi.mock("../models/models.js", () => ({
+    Curso: vi.fn().mockImplementation((data) => ({
+      ...data,
+      save: vi.fn().mockResolvedValue(undefined),
+    })),
+    Docente: {
+      find: vi.fn(),
+    },
+    Estudiante: {
+      find: vi.fn(),
+    },
+  }));
+
+  const app = express();
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  app.use(express.static(path.join(__dirname, "public")));
+  app.set("view engine", "pug");
+  app.set("views", "./views");
+
+  app.get("/cursos/nuevo", nuevoCurso);
+  app.post("/cursos/nuevo", postNuevoCurso);
+  app.get("/cursos/lista", listarCursos);
+  app.get("/cursos/editar/:id", editarNotasCurso);
+  app.post("/cursos/editar/:id", postEditarNotasCurso);
 
   beforeEach(() => {
     vi.clearAllMocks();
-
-      app = express();
-    app.use(express.json());
-
-    app.use(express.urlencoded({ extended: true }));
-
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-
-    app.use(express.static(path.join(__dirname, "public")));
-
-    app.set("view engine", "pug");
-    app.set("views", "./views");  
-
-    app.get("/cursos/nuevo", nuevoCurso);
-    app.post("/cursos/nuevo", postNuevoCurso);
-    app.get("/cursos/lista", listarCursos);
-    app.get("/cursos/editar/:id", editarNotasCurso);
-    app.post("/cursos/editar/:id", postEditarNotasCurso); 
 
     // mock de los métodos estáticos de Curso
     Curso.findOne = vi.fn();

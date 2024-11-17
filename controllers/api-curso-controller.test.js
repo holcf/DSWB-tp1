@@ -17,49 +17,23 @@ import {
   verifyListaCursos,
 } from "../auth.js";
 
-// Mock del modelo Curso
-vi.mock("../models/models.js", () => ({
-  Curso: vi.fn().mockImplementation((data) => ({
-    ...data,
-    save: vi.fn().mockResolvedValue(undefined),
-  })),
-}));
-
-vi.mock("../auth.js", () => ({
-  verifyAdmin: (req, res, next) => {
-    req.user = { id: 1, name: "Test User" }; // Simula un usuario autenticado
-    next();
-  },
-  verifyListaCursos: (req, res, next) => {
-    req.user = { id: 1, name: "Test User" }; // Simula un usuario autenticado
-    next();
-  },
-  verifyEdicionCurso: (req, res, next) => {
-    req.user = { id: 1, name: "Test User" }; // Simula un usuario autenticado
-    next();
-  },
-  verifyEstudiante: (req, res, next) => {
-    req.user = { id: 1, name: "Test User" }; // Simula un usuario autenticado
-    next();
-  },
-
-  verifyToken: (req, res, next) => {
-    req.user = { id: 1, name: "Test User" }; // Simula un usuario autenticado
-    next();
-  },
-}));
-
 describe("API Curso Controller", () => {
- let app;
+  // Mock del modelo Curso
+  vi.mock("../models/models.js", () => ({
+    Curso: vi.fn().mockImplementation((data) => ({
+      ...data,
+      save: vi.fn().mockResolvedValue(undefined),
+    })),
+  }));
+
+  const app = express();
+  app.use(express.json());
+  app.post("/api/cursos/nuevo", apiNuevoCurso);
+  app.get("/api/cursos/lista", apiListarCursos);
+  app.put("/api/cursos/editar/:id", apiEditarNotasCurso);
 
   beforeEach(() => {
     vi.clearAllMocks();
-
-       app = express();
-    app.use(express.json());  
-  app.post("/api/cursos/nuevo", apiNuevoCurso);
-    app.get("/api/cursos/lista", apiListarCursos);
-    app.put("/api/cursos/editar/:id", apiEditarNotasCurso);  
 
     // mock de los métodos estáticos de Curso
     Curso.findOne = vi.fn();

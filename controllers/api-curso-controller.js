@@ -65,7 +65,6 @@ export async function apiListarCursos(req, res) {
  */
 export async function apiEditarNotasCurso(req, res) {
   try {
-    
     let curso = await Curso.findById(req.params.id);
     if (!curso) {
       return res.status(404).json({ error: "Curso no encontrado" });
@@ -84,7 +83,6 @@ export async function apiEditarNotasCurso(req, res) {
       });
     }
     curso.estudiantes = estudiantes;
-    console.log("CURSO: ", curso);
     await curso.save();
 
     res.status(200).json({ message: "Notas guardadas con éxito" });
