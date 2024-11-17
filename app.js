@@ -20,7 +20,7 @@ dotenv.config();
 
 connectMongo(process.env.MONGODB_URI);
 
-export const app = express();
+const app = express();
 
 app.use(cookieParser());
 
@@ -88,3 +88,5 @@ export async function connectMongo(uri) {
     process.exit(1);
   }
 }
+
+module.exports = app;
