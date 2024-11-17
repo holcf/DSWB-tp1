@@ -124,6 +124,20 @@ export async function postEditarNotasCurso(req, res) {
   try {
     let curso = await Curso.findById(req.params.id);
 
+    if (!curso) {
+      return res.status(404).render("error", {
+        message: "Editar Notas | Curso no encontrado.",
+        errorCode: 404,
+      });
+    }
+
+    if (!req.body.estudianteId || !req.body.calificacion) {
+      return res.status(400).render("error", {
+        message: "Editar Notas | Datos incompletos.",
+        errorCode: 400,
+      });
+    }
+
     // Le damos formato a los datos de estudiantes y calificaciones
     // del formulario
     let estudiantes = [];

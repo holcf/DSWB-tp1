@@ -65,6 +65,7 @@ export async function apiListarCursos(req, res) {
  */
 export async function apiEditarNotasCurso(req, res) {
   try {
+    
     let curso = await Curso.findById(req.params.id);
     if (!curso) {
       return res.status(404).json({ error: "Curso no encontrado" });

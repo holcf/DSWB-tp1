@@ -20,7 +20,7 @@ dotenv.config();
 
 connectMongo(process.env.MONGODB_URI);
 
-const app = express();
+export const app = express();
 
 app.use(cookieParser());
 
@@ -64,7 +64,7 @@ app.listen(PORT, () => {
 
 // Conexión a la base de datos
 
-async function connectMongo(uri) {
+export async function connectMongo(uri) {
   let connection;
   try {
     connection = await mongoose.connect(uri, {});
