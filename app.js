@@ -89,4 +89,4 @@ export async function connectMongo(uri) {
   }
 }
 
-module.exports = app;
+export default app;

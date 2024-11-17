@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
@@ -14,7 +17,6 @@
   "license": "ISC",
   "dependencies": {
     "cookie-parser": "^1.4.7",
-    "crypto": "^1.0.1",
     "express": "^4.21.0",
     "jose": "^5.9.6",
     "mongoose": "^8.7.0",
