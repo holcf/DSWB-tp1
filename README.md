@@ -10,6 +10,7 @@
 - Middlewares en las rutas de las APIs, para verificar que el usuario que intenta acceder a un recurso tiene los permisos necesarios según su rol.
 - Testing con Vitest y SuperTest para: api-curso-controller.js, api-controller.js, curso-controller.js, y todas las funciones y middleware de autenticación presentes en auth.js. Elegimos Vitest en lugar de Jest dado que en nuestro proyecto utilizamos ESM Modules para importación en lugar de Common JS, y vimos en la documentación de Jest que solo tenían soporte experimental para ESM pero no recomendaban su utilización, en cambio Vitest soporta por defecto ESM y su API es casi la misma que Jest.
 - No utilizamos websockets dado que nuestra aplicación no requería de un módulo de chat u otro tipo de comunicación sincrónica.
+- Hicimos el deploy de la app en Render (https://dswb-tp1.onrender.com/). No logramos adaptarlo para que funcione en Vercel ya que nuestra app hace correr un servidor permanente y Vercel trabaja con serverless functions.
 
 ## Instalación
 
