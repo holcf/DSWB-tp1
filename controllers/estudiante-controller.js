@@ -78,7 +78,7 @@ export async function postNuevoEstudiante(req, res) {
     await nuevoUsuario.save();
 
     res.render("estudiante-nuevo", {
-      success: "Estudiante guardardo con éxito",
+      success: "Estudiante guardado con éxito",
     });
   } catch (error) {
     console.error("--- Error al guardar estudiante >>> ", error);

@@ -64,7 +64,7 @@ export async function postNuevoCurso(req, res) {
     res.render("curso-nuevo", {
       docentes,
       estudiantes,
-      success: "Curso guardardo con éxito",
+      success: "Curso guardado con éxito",
     });
   } catch (error) {
     console.error("--- Error al guardar curso >>> ", error);
