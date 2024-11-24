@@ -87,7 +87,7 @@ describe("Curso Controller", () => {
         })
         .expect(200);
 
-      expect(response.text).toContain("Curso guardardo con éxito");
+      expect(response.text).toContain("Curso guardado con éxito");
 
       // Verificamos que se llamó al constructor con los datos correctos
       expect(Curso).toHaveBeenCalledWith({
@@ -208,7 +208,7 @@ describe("Curso Controller", () => {
         })
         .expect(200);
 
-      // Verificamos que se llamó a res.render con los argumentos correctos y devolvio la vista correcta
+      // Verificamos que se llamó a res.render con los argumentos correctos y devolvió la vista correcta
       expect(response.text).toContain("Notas guardadas");
 
       // Verificamos que se guardaron las calificaciones correctamente
